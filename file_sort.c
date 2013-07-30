@@ -18,7 +18,7 @@
 int main()
 {
 	FILE *fp;
-	fp=fopen("file_sort.t","r");
+	fp=fopen("test_file_sort","r");
 	int VAL,input_type,prev_val;
 	int curr_state = N;	
 	char ch = getc(fp);
