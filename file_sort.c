@@ -19,7 +19,11 @@ int main()
 {
 	FILE *fp;
 	fp=fopen("test_file_sort","r");
-	int VAL,input_type,prev_val;
+	if(fp == NULL)
+		exit(0);
+	int input_type,dec_pos;
+	int prev_val,VAL;
+	float prev_dval,dec_denom;
 	int curr_state = N;	
 	char ch = getc(fp);
 	while( !feof(fp) )
@@ -27,7 +31,7 @@ int main()
 		int ascii_val = (int)ch;
 		if(ascii_val>=48 && ascii_val<=57)
 		{
-			VAL = ascii_val - 48;			
+			VAL = (float)ascii_val - 48;			
 			input_type = NUM;
 		}
 		else if(ascii_val==44)
@@ -52,6 +56,13 @@ int main()
 					curr_state=I;
 					prev_val=prev_val*10+VAL;
 				}
+				else if(curr_state == II)
+				{
+					dec_pos++;
+					dec_denom=dec_pos*10;					
+					curr_state=II;
+					prev_dval=prev_dval+(VAL/dec_denom);
+				}
 				else if(curr_state == III)
 				{
 					curr_state=I;
@@ -59,11 +70,38 @@ int main()
 				}
 				break;
 			}
+			case DOT:
+			{
+				if(curr_state == N)
+				{
+					printf("\nError1");
+					break;
+				}
+				else if(curr_state == I)
+				{
+					dec_pos=0;					
+					curr_state=II;
+					prev_dval=(float)prev_val;
+				}
+				else if(curr_state == II)
+				{
+					printf("\nError2");
+					break;
+				}
+				else if(curr_state == III)
+				{
+					printf("\nError3");
+					break;
+				}
+					
+				break;
+				break;
+			}
 			case COM :
 			{
 				if(curr_state == N)
 				{	
-					printf("\nError1");
+					printf("\nError4");
 					break;
 				}
 				else if(curr_state == I)
@@ -71,10 +109,16 @@ int main()
 					printf("\n%d",prev_val);
 					curr_state=III;
 					prev_val=0;
+				}
+				else if(curr_state == II)
+				{
+					printf("\n%f",prev_dval);
+					curr_state=III;
+					prev_dval=0;
 				}	
 				else if(curr_state == III)
 				{
-					printf("\nError2");
+					printf("\nError5");
 					break;
 				}
 				break;
@@ -83,17 +127,22 @@ int main()
 			{
 				if(curr_state == N)
 				{	
-					printf("\nError3");
+					printf("\nError6");
 					break;
 				}
 				else if(curr_state == I)
 				{
 					printf("\n%d\nComplete",prev_val);
 					break;
+				}
+				else if(curr_state == II)
+				{
+					printf("\n%f\nComplete",prev_dval);
+					break;
 				}	
 				else if(curr_state == III)
 				{
-					printf("\nError4");
+					printf("\nError7");
 					break;
 				}
 				break;
