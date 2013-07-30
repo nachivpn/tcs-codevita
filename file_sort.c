@@ -15,8 +15,32 @@
 #define CR	7
 #define ERR	8
 
+float* arr;
+int used=0;
+
+void error()
+{
+	printf("\nInvalid Input\n");
+	exit(0);
+}
+
+void insert(float value)	
+{
+	arr[used]=value;
+	used++;
+	arr=(float*) realloc(arr,sizeof(float));
+}
+
+void display()
+{
+	int i;
+	for(i=0;i<used;i++)	
+		(i==0)?printf("%f",arr[i]):printf(",%f",arr[i]);
+}
+
 int main()
 {
+	arr = (float*) malloc(sizeof(float));	
 	FILE *fp;
 	fp=fopen("test_file_sort","r");
 	if(fp == NULL)
@@ -74,7 +98,7 @@ int main()
 			{
 				if(curr_state == N)
 				{
-					printf("\nError1");
+					error();
 					break;
 				}
 				else if(curr_state == I)
@@ -85,12 +109,12 @@ int main()
 				}
 				else if(curr_state == II)
 				{
-					printf("\nError2");
+					error();
 					break;
 				}
 				else if(curr_state == III)
 				{
-					printf("\nError3");
+					error();
 					break;
 				}
 					
@@ -101,24 +125,24 @@ int main()
 			{
 				if(curr_state == N)
 				{	
-					printf("\nError4");
+					error();
 					break;
 				}
 				else if(curr_state == I)
 				{
-					printf("\n%d",prev_val);
+					insert((float)prev_val);
 					curr_state=III;
 					prev_val=0;
 				}
 				else if(curr_state == II)
 				{
-					printf("\n%f",prev_dval);
+					insert(prev_dval);
 					curr_state=III;
 					prev_dval=0;
 				}	
 				else if(curr_state == III)
 				{
-					printf("\nError5");
+					error();
 					break;
 				}
 				break;
@@ -127,36 +151,36 @@ int main()
 			{
 				if(curr_state == N)
 				{	
-					printf("\nError6");
+					error();
 					break;
 				}
 				else if(curr_state == I)
 				{
-					printf("\n%d\nComplete",prev_val);
+					//printf("%d\nComplete",prev_val);
+					insert((float)prev_val);
 					break;
 				}
 				else if(curr_state == II)
 				{
-					printf("\n%f\nComplete",prev_dval);
+					//printf("%f\nComplete",prev_dval);
+					insert(prev_dval);
 					break;
 				}	
 				else if(curr_state == III)
 				{
-					printf("\nError7");
+					error();
 					break;
 				}
 				break;
 			}
 			case ERR:
-			{					
-				printf("\nError : Invalid character");				
-				exit(0);
-			}				
+				error();				
 		}
 		ch=getc(fp);
 	}	
 	fclose(fp);
-	
+	display();	
+	free(arr);
 	return 1;
 }	
 
