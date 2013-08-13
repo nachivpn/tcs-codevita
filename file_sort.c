@@ -77,7 +77,7 @@ int partition(float *array,int p,int r)
 
 void error()
 {
-	printf("\nInvalid Input\n");
+	printf("Invalid Input\n");
 	exit(0);
 }
 

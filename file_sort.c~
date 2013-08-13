@@ -192,12 +192,12 @@ void FSM_simulate()
 			{
 				if(curr_state == I)
 				{
-					insert((float)prev_val);
+					(sign==M)?insert((float)prev_val*-1):insert((float)prev_val);
 					break;
 				}
 				else if(curr_state == II)
 				{
-					insert(prev_dval);
+					(sign==M)?insert(prev_dval*-1):insert(prev_dval);
 					break;
 				}	
 				else 
